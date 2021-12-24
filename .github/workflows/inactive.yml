@@ -12,7 +12,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: inactive user action
         id: inactive-user
-        uses: meiyanathanj/inactive-user-sample@v1.1
+        uses: meiyanathanj/inactive-user-sample@v1.2
         with:
           token: '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'
           orgs-name: 'internal-test-organization'
