@@ -5,9 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     name: User test API
     steps:
-      - name: inactive user action step
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - name: inactive user action
         id: inactive-user
-        uses: meiyanathanj/inactive-user-sample@v1.0
+        uses: meiyanathanj/inactive-user-sample
         with:
           token: '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'
           orgs-name: 'internal-test-organization'
