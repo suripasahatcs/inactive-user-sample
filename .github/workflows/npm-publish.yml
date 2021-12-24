@@ -1,0 +1,16 @@
+on: [push]
+
+jobs:
+  user_api:
+    runs-on: ubuntu-latest
+    name: User test API
+    steps:
+      - name: inactive user action step
+        id: inactive-user
+        uses: actions/inactive-user-sample@v1.0
+        with:
+          token: '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'
+          orgs-name: 'internal-test-organization'
+      # Use the output from the `inactive-user` step
+      - name: Get the output
+        run: echo "The time was ${{ steps.inactive-user.outputs.status }}"
