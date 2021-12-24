@@ -19,7 +19,7 @@ JSON response.
 
 ## Example usage
 
-uses: actions/inactive-user-sample@v1.1
+uses: actions/inactive-user-sample@v1.0
 with:
   token: 'token'
   orgs-name: 'internal-test'
