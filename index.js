@@ -29,7 +29,7 @@ try {
   const PAtoken = core.getInput('token');
   const orgsname = core.getInput('orgs-name');
   console.log(`Hello ${orgsname}!`);
-  const APIRes = await apicall(orgsname,PAtoken);
+  const APIRes = apicall(orgsname,PAtoken);
   // const time = (new Date()).toTimeString();
   core.setOutput("status", APIRes);
   // Get the JSON webhook payload for the event that triggered the workflow
