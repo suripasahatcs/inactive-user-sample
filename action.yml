@@ -1,0 +1,16 @@
+name: 'Inactive User Sample'
+description: 'Identify Inactive users based on mumber of days they are Inactive (default 30)'
+inputs:
+  token:  # PAT of input
+    description: 'PAT for accessing API'
+    required: true
+  orgs-name:  # organizations
+      description: 'organizations name'
+      required: true
+      # default: 'World'
+outputs:
+  status: # status of output
+    description: 'Success or failure'
+runs:
+  using: 'node12'
+  main: 'index.js'
