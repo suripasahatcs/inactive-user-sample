@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: inactive user action step
         id: inactive-user
-        uses: actions/inactive-user-sample@v1.0
+        uses: meiyanathanj/inactive-user-sample@v1.0
         with:
           token: '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'
           orgs-name: 'internal-test-organization'
