@@ -18,7 +18,7 @@ async function apicall(orgs,PAtoken){
     })
     .catch(error => {
       console.log(error)
-      return error;
+      core.setFailed(error);
     })
 
 }
