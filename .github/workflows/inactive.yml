@@ -10,6 +10,10 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
+      - name: Publish to NPM
+        run: |
+          npm install
+          npm test
       - name: inactive user action
         id: inactive-user
         uses: meiyanathanj/inactive-user-sample@v1.2
