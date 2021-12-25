@@ -20,9 +20,8 @@
   },
   "homepage": "https://github.com/meiyanathanj/inactive-user-sample#readme",
   "dependencies": {
-    "@actions/core": "^1.6.0",
+    "@actions/core": "^1.2.6",
     "@actions/io": "^1.0.2",
-    "@actions/github": "^5.0.0",
     "@octokit/plugin-retry": "^3.0.4",
     "@octokit/plugin-throttling": "^3.3.3",
     "@octokit/rest": "^18.0.9",

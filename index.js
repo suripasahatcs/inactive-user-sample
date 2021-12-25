@@ -70,7 +70,7 @@ function saveIntermediateData(directory, data) {
   try {
     const file = path.join(directory, 'organization_user_activity.json');
     fs.writeFileSync(file, JSON.stringify(data));
-    core.setOutput('report_json', data);
+    core.setOutput('report_json', file);
   } catch (err) {
     console.error(`Failed to save intermediate data: ${err}`);
   }
