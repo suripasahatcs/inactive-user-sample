@@ -12203,11 +12203,11 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 9239:
+/***/ 2571:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const Organization = __nccwpck_require__(8640)
-  , RepositoryActivity = __nccwpck_require__(2082)
+const Organization = __nccwpck_require__(7276)
+  , RepositoryActivity = __nccwpck_require__(4525)
   , UserActivity = __nccwpck_require__(5947)
 ;
 
@@ -12437,7 +12437,7 @@ function clearTime(date) {
 
 /***/ }),
 
-/***/ 8050:
+/***/ 5064:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const util = __nccwpck_require__(8843);
@@ -12509,7 +12509,7 @@ module.exports = class CommitActivity {
 
 /***/ }),
 
-/***/ 1726:
+/***/ 2419:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const util = __nccwpck_require__(8843);
@@ -12611,7 +12611,7 @@ module.exports = class IssueActivity {
 
 /***/ }),
 
-/***/ 8640:
+/***/ 7276:
 /***/ ((module) => {
 
 module.exports = class Organization {
@@ -12657,7 +12657,7 @@ module.exports = class Organization {
 
 /***/ }),
 
-/***/ 5070:
+/***/ 9853:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const util = __nccwpck_require__(8843);
@@ -12724,12 +12724,12 @@ module.exports = class PullRequestActivity {
 
 /***/ }),
 
-/***/ 2082:
+/***/ 4525:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const CommitActivity = __nccwpck_require__(8050)
-  , IssueActivity = __nccwpck_require__(1726)
-  , PullRequestActivity = __nccwpck_require__(5070)
+const CommitActivity = __nccwpck_require__(5064)
+  , IssueActivity = __nccwpck_require__(2419)
+  , PullRequestActivity = __nccwpck_require__(9853)
   , UserActivityAttributes = __nccwpck_require__(6540)
 
 module.exports = class RepositoryActivity {
@@ -12740,6 +12740,7 @@ module.exports = class RepositoryActivity {
     this._pullRequestActivity = new PullRequestActivity(octokit)
   }
 
+  
   async getActivity(repo, since) {
     const owner = repo.owner
       , name = repo.name
@@ -12802,7 +12803,7 @@ module.exports = class RepositoryActivity {
 
 /***/ }),
 
-/***/ 7183:
+/***/ 6451:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const {throttling} = __nccwpck_require__(4002)
@@ -13034,8 +13035,8 @@ const fs = __nccwpck_require__(7147)
   , core = __nccwpck_require__(4085)
   , io = __nccwpck_require__(8702)
   , json2csv = __nccwpck_require__(1957)
-  , OrganizationActivity = __nccwpck_require__(9239)
-  , githubClient = __nccwpck_require__(7183)
+  , OrganizationActivity = __nccwpck_require__(2571)
+  , githubClient = __nccwpck_require__(6451)
   , dateUtil = __nccwpck_require__(8843)
 ;
 
