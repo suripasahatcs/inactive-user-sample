@@ -13,7 +13,7 @@ on:
         
       activity_days:
         description: The number of days to use to analyze activity
-        default: '7'
+        default: '30'
         
       # debug:
       #   description: Debug output
@@ -33,7 +33,7 @@ jobs:
         
       - name: Analyze organization
         id: analyze_org
-        uses: meiyanathanj/inactive-user-sample@v1.7
+        uses: meiyanathanj/inactive-user-sample@v1.8
         with:
           token: ${{ secrets.OCTODEMO_TEMP_TOKEN }}
           organization: ${{ github.event.inputs.organization }}

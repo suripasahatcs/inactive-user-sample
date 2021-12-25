@@ -5,8 +5,8 @@ const fs = require('fs')
   , core = require('@actions/core')
   , io = require('@actions/io')
   , json2csv = require('json2csv')
-  , OrganizationActivity = require('./src/OrganizationUserActivity')
-  , githubClient = require('./src/github/githubClient')
+  , OrganizationActivity = require('./src/OrgsUserActivity')
+  , githubClient = require('./src/githublib/githubClient')
   , dateUtil = require('./src/dateUtil')
 ;
 
