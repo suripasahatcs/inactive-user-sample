@@ -1,6 +1,6 @@
-name: GitHub Organization User Activity Report
-description: Generates a summary of user activity for an organization
-author: Peter Murray
+name: GitHub Organization User Activity
+description: A summary of user activity for an organization
+author: ManiKandan
 
 inputs:
   token:
