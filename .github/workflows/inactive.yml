@@ -29,7 +29,7 @@ jobs:
         
       - name: Analyze organization
         id: analyze_org
-        uses: ./
+        uses: meiyanathanj/inactive-user-sample@v1.8.3
         with:
           token: ${{ secrets.OCTODEMO_TEMP_TOKEN }}
           organization: ${{ github.event.inputs.organization }}
