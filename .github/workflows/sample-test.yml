@@ -9,15 +9,15 @@ on:
         
       organization:
         description: The organization to process
-        default: octodemo
+        default: internal-test-organization
         
       activity_days:
         description: The number of days to use to analyze activity
         default: '7'
         
-      debug:
-        description: Debug output
-        default: 'false'
+      # debug:
+      #   description: Debug output
+      #   default: 'false'
 
 jobs:
   analyze:
@@ -38,8 +38,7 @@ jobs:
           token: ${{ secrets.OCTODEMO_TEMP_TOKEN }}
           organization: ${{ github.event.inputs.organization }}
           activity_days: ${{ github.event.inputs.activity_days }}
-          debug: ${{ github.event.inputs.debug }}
- 
+           
       - name: Attach Artifacts
         uses: actions/upload-artifact@v2
         with:
