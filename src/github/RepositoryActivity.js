@@ -11,6 +11,7 @@ module.exports = class RepositoryActivity {
     this._pullRequestActivity = new PullRequestActivity(octokit)
   }
 
+  
   async getActivity(repo, since) {
     const owner = repo.owner
       , name = repo.name
