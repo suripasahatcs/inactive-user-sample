@@ -36,4 +36,4 @@ jobs:
           activity_days: ${{ github.event.inputs.activity_days }}
 
       - name: Results
-        run: echo ${{ steps.analyze_org.outputs.report_json }}
+        run: echo ${{ steps.analyze_org.outputs.report_data }}

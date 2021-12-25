@@ -36,6 +36,7 @@ async function run() {
 
   console.log(`Attempting to generate organization user activity data, this could take some time...`);
   const userActivity = await orgActivity.getUserActivity(organization, fromDate);
+  core.setOutput('report_data', userActivity);
   saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
 
   // Convert the JavaScript objects into a JSON payload so it can be output
@@ -70,7 +71,7 @@ function saveIntermediateData(directory, data) {
   try {
     const file = path.join(directory, 'organization_user_activity.json');
     fs.writeFileSync(file, JSON.stringify(data));
-    core.setOutput('report_json', data);
+    core.setOutput('report_json', file);
   } catch (err) {
     console.error(`Failed to save intermediate data: ${err}`);
   }
