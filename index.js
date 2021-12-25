@@ -36,21 +36,21 @@ async function run() {
 
   console.log(`Attempting to generate organization user activity data, this could take some time...`);
   const userActivity = await orgActivity.getUserActivity(organization, fromDate);
-  core.setOutput('report_json', userActivity);
   // saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
-
+  const jsonresp = userActivity.map(activity => activity.jsonPayload);
+  core.setOutput('report_json', jsonresp);
   // Convert the JavaScript objects into a JSON payload so it can be output
-  console.log(`User activity data captured, generating report...`);
-  const data = userActivity.map(activity => activity.jsonPayload)
-    , csv = json2csv.parse(data, {})
-  ;
+  console.log(`User activity data captured, generating report...${jsonresp}`);
+  // const data = userActivity.map(activity => activity.jsonPayload)
+  //   , csv = json2csv.parse(data, {})
+  // ;
 
-  const file = path.join(outputDir, 'organization_user_activity.csv');
-  fs.writeFileSync(file, csv);
-  console.log(`User Activity Report Generated: ${file}`);
+  // const file = path.join(outputDir, 'organization_user_activity.csv');
+  // fs.writeFileSync(file, csv);
+  // console.log(`User Activity Report Generated: ${file}`);
 
   // Expose the output csv file
-  core.setOutput('report_csv', file);
+  // core.setOutput('report_csv', file);
 }
 
 async function execute() {
