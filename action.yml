@@ -1,16 +1,39 @@
-name: 'Inactive User Sample'
-description: 'Identify Inactive users based on mumber of days they are Inactive (default 30)'
+name: GitHub Organization User Activity Report
+description: Generates a summary of user activity for an organization
+author: Peter Murray
+
 inputs:
-  token:  # PAT of input
-    description: 'PAT for accessing API'
+  token:
+    description: GitHub Access Token with permissions for accesing Repositories and Organization data.
     required: true
-  orgs-name:  # organizations
-      description: 'organizations name'
-      required: true
-      # default: 'World'
-outputs:
-  status: # status of output
-    description: 'Success or failure'
+
+  outputDir:
+    description: The output directory for the generated report(s).
+    required: true
+    default: ${{ github.workspace }}
+
+  organization:
+    description: The organization that is to be processed to detect inactive users
+    required: true
+
+  since:
+    description: A date time in ISO 8601 format YYYY-MM-DDTHH:mm:ss. If specified activity_days will be ignored.
+    required: false
+
+  activity_days:
+    description: The number of days in the past to check for activity, this will be ignored if 'since' parameter is used.
+    required: true
+    default: 30
+
+  octokit_max_retries:
+    description: Maximum number of retires when using the Octokit REST API
+    required: true
+    default: 15
+
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: node12
+  main: dist/index.js
+
+branding:
+  icon: users
+  color: orange
