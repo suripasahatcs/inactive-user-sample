@@ -13602,7 +13602,7 @@ async function run() {
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
   core.setOutput('report_json', jsonresp);
   // Convert the JavaScript objects into a JSON payload so it can be output
-  console.log(`User activity data captured, generating manii report... ${jsonresp}`);
+  console.log(`User activity data captured, generating manii report... `);
   // const data = userActivity.map(activity => activity.jsonPayload)
   //   , csv = json2csv.parse(data, {})
   // ;
