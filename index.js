@@ -38,7 +38,8 @@ async function run() {
   const userActivity = await orgActivity.getUserActivity(organization, fromDate);
   // saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
-  core.setOutput('report_json', jsonresp.filter(user => user.isActive === false));
+  core.setOutput('report_json', jsonresp.filter(user => console.log(user)));
+  core.setOutput('report_test', jsonresp);
   // Convert the JavaScript objects into a JSON payload so it can be output
   console.log(`User activity data captured, generating manii report... `);
   // const data = userActivity.map(activity => activity.jsonPayload)

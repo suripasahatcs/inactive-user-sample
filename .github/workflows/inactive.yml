@@ -39,5 +39,8 @@ jobs:
         run: |
           echo "Inactive user list for last ${{ github.event.inputs.activity_days }} days"
           ${{ steps.analyze_org.outputs.report_json }}
+          ${{ steps.analyze_org.outputs.report_test }}
+
+          
 
         
