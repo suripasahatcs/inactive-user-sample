@@ -13604,7 +13604,7 @@ async function run() {
   const jsoncsv = jsonresp.filter(user => { return user.isActive === false });
   core.setOutput('report_csv', jsoncsv);
   // Convert the JavaScript objects into a JSON payload so it can be output
-  console.log(`User activity data captured, generating manii report... `);
+  console.log(`User activity data captured, generating maniii report... `);
   // const data = userActivity.map(activity => activity.jsonPayload)
   //   , csv = json2csv.parse(data, {})
   // ;
