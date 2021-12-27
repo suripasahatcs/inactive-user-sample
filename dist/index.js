@@ -13600,11 +13600,13 @@ async function run() {
   const userActivity = await orgActivity.getUserActivity(organization, fromDate);
   // saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
-  core.setOutput('report_json', jsonresp);
-  const jsoncsv = jsonresp.filter(user => { return user.isActive === false });
-  core.setOutput('report_csv', jsoncsv);
+  const jsonlist = jsonresp.filter(user => { return user.isActive === false });
+  core.setOutput('report_json', jsonlist);
+  core.setOutput('usercount', jsonlist.length);
+  core.setOutput('message', 'Success');
+
   // Convert the JavaScript objects into a JSON payload so it can be output
-  console.log(`User activity data captured, generating maniii report... `);
+  console.log(`User activity data captured, generating inactive user report... `);
   // const data = userActivity.map(activity => activity.jsonPayload)
   //   , csv = json2csv.parse(data, {})
   // ;
