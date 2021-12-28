@@ -13674,6 +13674,8 @@ async function run() {
   saveIntermediateData(outputDir, removeduserlist);
 
   console.log(removeduserlist)
+  console.log(jsonlist)
+
  
   const totalInactive = jsonlist.length;
   
