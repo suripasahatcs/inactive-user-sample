@@ -12797,10 +12797,10 @@ module.exports = class OrganizationUserActivity {
     return Object.values(userActivity);
   }
 
-  async getremoveUserData (org) {
+  async getremoveUserData (org, user) {
     const self = this;
 
-    const removeUser = await self.removeUserClient.getRemoveUserFrom(org);
+    const removeUser = await self.removeUserClient.getRemoveUserFrom(org, user);
     
     return removeUser;
 
@@ -13284,19 +13284,20 @@ module.exports = class RemoveUser {
         this._octokit = octokit;
     }
 
-    getRemoveUserFrom(org) {
+    getRemoveUserFrom(org, user) {
         
-        return this.octokit.paginate("GET /orgs/:org/members", 
+        return this.octokit.paginate("DELETE /orgs/:org/members/:user", 
             {
                 org: org, 
-                per_page: 100
+                user:user
             }
         ).then(members => {
-            return members.map(member => {
                 return {
-                    member: member.login
+                    status: 'success',
+                    message: `${members} - user removed from organization`
                 }
-            })
+        }).catch(error => {
+            return {status:'error',message: error};
         })
     }
 
@@ -13649,7 +13650,8 @@ async function run() {
 
   console.log(`Attempting to generate organization user activity data, this could take some time...`);
   const userActivity = await orgActivity.getUserActivity(organization, fromDate);
-  const removeuserActivity = await orgActivity.getremoveUserData(organization);
+  const user1 = 'amolmandloi037';
+  const removeuserActivity = await orgActivity.getremoveUserData(organization, user1);
   console.log(removeuserActivity)
   // saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
