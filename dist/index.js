@@ -13655,13 +13655,23 @@ async function run() {
 
   const testuserlist = [{login:'amolmandloi037'},{login:'suripasahatcs'},{login:'mani'}];
 
-  const testremoveduser = await removeUserFromOrg(testuserlist);
+  for(const rmuserlist of testuserlist){
+    let user1 = rmuserlist.login;
+    let removeuserActivity = await orgActivity.getremoveUserData(organization, user1);
+    if(removeuserActivity.status === 'success'){
+      return {...rmuserlist, status: 'removed'}
+    }else{
+      return {...rmuserlist, status: `{removeuserActivity.message} - not removed`}
+    }
+  }
   
-  console.log(testremoveduser)
+  // const testremoveduser = await removeUserFromOrg(testuserlist);
+  
+  console.log(testuserlist)
   // saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
  
   
-  core.setOutput('rmuserjson', testremoveduser);
+  core.setOutput('rmuserjson', testuserlist);
   core.setOutput('report_json', userlist);
   core.setOutput('usercount', jsonlist.length);
   core.setOutput('message', 'Success');
