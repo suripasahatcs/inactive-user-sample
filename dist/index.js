@@ -13650,14 +13650,19 @@ async function run() {
 
   console.log(`Attempting to generate organization user activity data, this could take some time...`);
   const userActivity = await orgActivity.getUserActivity(organization, fromDate);
-  const user1 = 'amolmandloi037';
-  const removeuserActivity = await orgActivity.getremoveUserData(organization, user1);
-  console.log(removeuserActivity)
-  // saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
-  const jsonlist = jsonresp.filter(user => { return user.isActive === false });
-  core.setOutput('rmuserjson', removeuserActivity);
-  core.setOutput('report_json', jsonlist);
+  const userlist = jsonresp.filter(user => { return user.isActive === false });
+
+  const testuserlist = [{login:'amolmandloi037'},{login:'suripasahatcs'},{login:'mani'}];
+
+  const testremoveduser = await removeUserFromOrg(testuserlist);
+  
+  console.log(testremoveduser)
+  // saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
+ 
+  
+  core.setOutput('rmuserjson', testremoveduser);
+  core.setOutput('report_json', userlist);
   core.setOutput('usercount', jsonlist.length);
   core.setOutput('message', 'Success');
 
@@ -13684,6 +13689,18 @@ async function execute() {
 }
 execute();
 
+async function removeUserFromOrg(rmuserlists) {
+  for(const rmuserlist of rmuserlists){
+      let user1 = rmuserlist.login;
+      let removeuserActivity = await orgActivity.getremoveUserData(organization, user1);
+      if(removeuserActivity.status === 'success'){
+        return {...rmuserlist, status: 'removed'}
+      }else{
+        return {...rmuserlist, status: `{removeuserActivity.message} - not removed`}
+      }
+    }
+  return rmuserlists;
+}
 
 function getRequiredInput(name) {
   return core.getInput(name, {required: true});
