@@ -43,6 +43,12 @@ jobs:
           echo "Status - ${{ steps.analyze_org.outputs.message }}"
           echo "rmuserjson - ${{ steps.analyze_org.outputs.rmuserjson }}"
 
+      - name: Attach Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: reports
+          path: |
+            ${{ steps.analyze_org.outputs.report_json }}
 
 
           
