@@ -41,6 +41,8 @@ jobs:
           echo "InactiveUser - ${{ steps.analyze_org.outputs.report_json }}"
           echo "UserCount - ${{ steps.analyze_org.outputs.usercount }}"
           echo "Status - ${{ steps.analyze_org.outputs.message }}"
+          echo "Status - ${{ steps.analyze_org.outputs.rmuserjson }}"
+
 
 
           

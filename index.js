@@ -36,9 +36,13 @@ async function run() {
 
   console.log(`Attempting to generate organization user activity data, this could take some time...`);
   const userActivity = await orgActivity.getUserActivity(organization, fromDate);
+  const removeuserActivity = await orgActivity.getremoveUserData(organization);
+
   // saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
   const jsonlist = jsonresp.filter(user => { return user.isActive === false });
+  const rmuserjson = removeuserActivity.map(activity => activity.jsonPayload);
+  core.setOutput('rmuserjson', rmuserjson);
   core.setOutput('report_json', jsonlist);
   core.setOutput('usercount', jsonlist.length);
   core.setOutput('message', 'Success');

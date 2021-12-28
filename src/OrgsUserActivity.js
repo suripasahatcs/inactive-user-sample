@@ -1,5 +1,6 @@
 const Organization = require('./githublib/Organization')
   , RepositoryActivity = require('./githublib/RepositoryActivity')
+  , RemoveUser = require('githublib/RemoveUser')
   , UserActivity = require('./UserActivity')
 ;
 
@@ -9,6 +10,7 @@ module.exports = class OrganizationUserActivity {
   constructor(octokit) {
     this._organization = new Organization(octokit);
     this._repositoryActivity = new RepositoryActivity(octokit);
+    this._removeUser = new RemoveUser(octokit);
   }
 
   get organizationClient() {
@@ -17,6 +19,10 @@ module.exports = class OrganizationUserActivity {
 
   get repositoryClient() {
     return this._repositoryActivity;
+  }
+
+  get removeUserClient() {
+    return this._removeUser;
   }
 
   async getUserActivity(org, since) {
@@ -49,6 +55,15 @@ module.exports = class OrganizationUserActivity {
 
     // An array of user activity objects
     return Object.values(userActivity);
+  }
+
+  async getremoveUserData (org) {
+    const self = this;
+
+    const removeUser = await self.removeUserClient.getRemoveUserFrom(org);
+    
+    return removeUser;
+
   }
 }
 
