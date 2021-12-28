@@ -13653,7 +13653,7 @@ async function run() {
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
   const jsonlist = jsonresp.filter(user => { return user.isActive === false });
 
-  const removeduserlist = [{login:'amolmandloi037'},{login:'suripasahatcs'},{login:'mani'}];
+  const removeduserlist = [{login:'1649901'},{login:'manitest'}];
   console.log(`Attempting to remove inactive user lists from organization - ${removeduserlist.length} `)
 
   let rmvconfrm = 0;
