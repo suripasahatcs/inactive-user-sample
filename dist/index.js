@@ -12740,6 +12740,7 @@ function wrappy (fn, cb) {
 
 const Organization = __nccwpck_require__(7276)
   , RepositoryActivity = __nccwpck_require__(4525)
+  , RemoveUser = __nccwpck_require__(2157)
   , UserActivity = __nccwpck_require__(5947)
 ;
 
@@ -12749,6 +12750,7 @@ module.exports = class OrganizationUserActivity {
   constructor(octokit) {
     this._organization = new Organization(octokit);
     this._repositoryActivity = new RepositoryActivity(octokit);
+    this._removeUser = new RemoveUser(octokit);
   }
 
   get organizationClient() {
@@ -12757,6 +12759,10 @@ module.exports = class OrganizationUserActivity {
 
   get repositoryClient() {
     return this._repositoryActivity;
+  }
+
+  get removeUserClient() {
+    return this._removeUser;
   }
 
   async getUserActivity(org, since) {
@@ -12789,6 +12795,15 @@ module.exports = class OrganizationUserActivity {
 
     // An array of user activity objects
     return Object.values(userActivity);
+  }
+
+  async getremoveUserData (org) {
+    const self = this;
+
+    const removeUser = await self.removeUserClient.getRemoveUserFrom(org);
+    
+    return removeUser;
+
   }
 }
 
@@ -13391,6 +13406,14 @@ module.exports = eval("require")("encoding");
 
 /***/ }),
 
+/***/ 2157:
+/***/ ((module) => {
+
+module.exports = eval("require")("githublib/RemoveUser");
+
+
+/***/ }),
+
 /***/ 9491:
 /***/ ((module) => {
 
@@ -13598,9 +13621,13 @@ async function run() {
 
   console.log(`Attempting to generate organization user activity data, this could take some time...`);
   const userActivity = await orgActivity.getUserActivity(organization, fromDate);
+  const removeuserActivity = await orgActivity.getremoveUserData(organization);
+  console.log(removeuserActivity)
   // saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
   const jsonlist = jsonresp.filter(user => { return user.isActive === false });
+  const rmuserjson = removeuserActivity.map(activity => activity.jsonPayload);
+  core.setOutput('rmuserjson', rmuserjson);
   core.setOutput('report_json', jsonlist);
   core.setOutput('usercount', jsonlist.length);
   core.setOutput('message', 'Success');
