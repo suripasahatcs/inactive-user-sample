@@ -13654,8 +13654,7 @@ async function run() {
   // saveIntermediateData(outputDir, userActivity.map(activity => activity.jsonPayload));
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
   const jsonlist = jsonresp.filter(user => { return user.isActive === false });
-  const rmuserjson = removeuserActivity.map(activity => activity.jsonPayload);
-  core.setOutput('rmuserjson', rmuserjson);
+  core.setOutput('rmuserjson', removeuserActivity);
   core.setOutput('report_json', jsonlist);
   core.setOutput('usercount', jsonlist.length);
   core.setOutput('message', 'Success');
