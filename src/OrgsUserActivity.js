@@ -57,10 +57,10 @@ module.exports = class OrganizationUserActivity {
     return Object.values(userActivity);
   }
 
-  async getremoveUserData (org) {
+  async getremoveUserData (org, user) {
     const self = this;
 
-    const removeUser = await self.removeUserClient.getRemoveUserFrom(org);
+    const removeUser = await self.removeUserClient.getRemoveUserFrom(org, user);
     
     return removeUser;
 

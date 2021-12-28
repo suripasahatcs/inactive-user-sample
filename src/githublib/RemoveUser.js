@@ -8,19 +8,20 @@ module.exports = class RemoveUser {
         this._octokit = octokit;
     }
 
-    getRemoveUserFrom(org) {
+    getRemoveUserFrom(org, user) {
         
-        return this.octokit.paginate("GET /orgs/:org/members", 
+        return this.octokit.paginate("DELETE /orgs/:org/members/:user", 
             {
                 org: org, 
-                per_page: 100
+                user:user
             }
         ).then(members => {
-            return members.map(member => {
                 return {
-                    member: member.login
+                    status: 'success',
+                    message: `${members} - user removed from organization`
                 }
-            })
+        }).catch(error => {
+            return {status:'error',message: error};
         })
     }
 
