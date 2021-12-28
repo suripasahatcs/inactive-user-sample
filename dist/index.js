@@ -13654,14 +13654,16 @@ async function run() {
   const userlist = jsonresp.filter(user => { return user.isActive === false });
 
   const testuserlist = [{login:'amolmandloi037'},{login:'suripasahatcs'},{login:'mani'}];
+  console.log(`before - ${testuserlist} `)
+  console.log('before')
 
   for(const rmuserlist of testuserlist){
     let user1 = rmuserlist.login;
     let removeuserActivity = await orgActivity.getremoveUserData(organization, user1);
     if(removeuserActivity.status === 'success'){
-      return {...rmuserlist, status: 'removed'}
+      Object.assign(rmuserlist,{status:' removed'});
     }else{
-      return {...rmuserlist, status: `{removeuserActivity.message} - not removed`}
+      Object.assign(rmuserlist,{status:'not removed'});
     }
   }
   
@@ -13704,9 +13706,9 @@ async function removeUserFromOrg(rmuserlists) {
       let user1 = rmuserlist.login;
       let removeuserActivity = await orgActivity.getremoveUserData(organization, user1);
       if(removeuserActivity.status === 'success'){
-        return {...rmuserlist, status: 'removed'}
+        Object.assign(rmuserlist,{status:' removed'});
       }else{
-        return {...rmuserlist, status: `{removeuserActivity.message} - not removed`}
+        Object.assign(rmuserlist,{status:'not removed'});
       }
     }
   return rmuserlists;
