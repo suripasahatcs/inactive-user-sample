@@ -12740,7 +12740,7 @@ function wrappy (fn, cb) {
 
 const Organization = __nccwpck_require__(7276)
   , RepositoryActivity = __nccwpck_require__(4525)
-  , RemoveUser = __nccwpck_require__(2157)
+  , RemoveUser = __nccwpck_require__(5631)
   , UserActivity = __nccwpck_require__(5947)
 ;
 
@@ -13271,6 +13271,42 @@ module.exports = class PullRequestActivity {
 
 /***/ }),
 
+/***/ 5631:
+/***/ ((module) => {
+
+
+module.exports = class RemoveUser {
+
+    constructor(octokit) {
+        if(!octokit) {
+            throw new Error('An octokit client must be provided');
+        }
+        this._octokit = octokit;
+    }
+
+    getRemoveUserFrom(org) {
+        
+        return this.octokit.paginate("GET /orgs/:org/members", 
+            {
+                org: org, 
+                per_page: 100
+            }
+        ).then(members => {
+            return members.map(member => {
+                return {
+                    member: member.login
+                }
+            })
+        })
+    }
+
+    get octokit() {
+        return this._octokit;
+    }
+}
+
+/***/ }),
+
 /***/ 4525:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -13402,14 +13438,6 @@ module.exports.create = (token, maxRetries) => {
 /***/ ((module) => {
 
 module.exports = eval("require")("encoding");
-
-
-/***/ }),
-
-/***/ 2157:
-/***/ ((module) => {
-
-module.exports = eval("require")("githublib/RemoveUser");
 
 
 /***/ }),

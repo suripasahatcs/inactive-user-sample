@@ -1,6 +1,6 @@
 const Organization = require('./githublib/Organization')
   , RepositoryActivity = require('./githublib/RepositoryActivity')
-  , RemoveUser = require('githublib/RemoveUser')
+  , RemoveUser = require('./githublib/RemoveUser')
   , UserActivity = require('./UserActivity')
 ;
 
