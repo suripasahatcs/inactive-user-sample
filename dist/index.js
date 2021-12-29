@@ -13672,7 +13672,7 @@ async function run() {
     // const removeduserlist = [{login:'1649898'},{login:'manitest'}];{login:'amolmandloi037'},
     // const removeduserlist = [{login:'Meiyanthan'},{login:'manitest'}];
     const removeduserlist = jsonlist;
-    const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist);
+    const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist, removeFlag);
     removeMulUserList = [...removeMulUserList, ...removeMulUserRes.removeduserarr];
     jsonfinallist = [...jsonfinallist, ...jsonlist];
     rmvconfrm += removeMulUserRes.rmvlen;
@@ -13685,38 +13685,6 @@ async function run() {
   
   
   //***end test */
-
-  /*
-  console.log(`Attempting to generate organization user activity data, this could take some time...`);
-  const userActivity = await orgActivity.getUserActivity(organization, fromDate);
-  const jsonresp = userActivity.map(activity => activity.jsonPayload);
-  const jsonlist = jsonresp.filter(user => { return user.isActive === false });
-
-  console.log(`******* RemoveFlag - ${removeFlag}`)
-
-  const removeduserlist = [{login:'1649898'},{login:'manitest'}];
-  // const removeduserlist = [{login:'amolmandloi037'},{login:'suripasahatcs'},{login:'manitest'}];
-  let rmvconfrm = 0;
-  if(removeFlag.toLowerCase() === 'yes'){
-    console.log(`**** Attempting to remove inactive user lists from organization - ${removeduserlist.length} ****`)
-
-    for(const rmuserlist of removeduserlist){
-      let rmusername = rmuserlist.login;
-      let removeuserActivity = await orgActivity.getremoveUserData(organization, rmusername);
-      if(removeuserActivity.status === 'success'){
-        console.log(`${rmusername} - Inactive users removed from organization`);
-        Object.assign(rmuserlist, {status:'removed'});
-        rmvconfrm++;
-      }else{
-        console.log(`${rmusername} - Due to some error not removed from organization`);
-        Object.assign(rmuserlist, {status:'not removed'});
-      }
-    }
-  }else{
-    console.log(`**** Skipping the remove inactive user lists from organization process. **** `)
-    rmvconfrm = removeduserlist.length;
-  }
-  */
 
   console.log(`User activity data captured, generating inactive user report... `);
   // saveIntermediateData(outputDir, removeMulUserList);
@@ -13764,7 +13732,7 @@ function getRequiredInput(name) {
   return core.getInput(name, {required: true});
 }
 
-async function removeMultipleUser(orgActivity, orgsname, removeduserarr){
+async function removeMultipleUser(orgActivity, orgsname, removeduserarr, removeFlag){
   let rmvlen = 0;
   if(removeFlag.toLowerCase() === 'yes'){
     console.log(`**** Attempting to remove inactive user lists from - ${orgsname}. Count of ${removeduserarr.length} ****`)
