@@ -13641,7 +13641,7 @@ async function run() {
   } else {
     fromDate = dateUtil.convertDaysToDate(days);
   }
-  console.log(`************ remove flag - ${removeFlag}`)
+  
   // Ensure that the output directory exists before we our limited API usage
   await io.mkdirP(outputDir)
 
@@ -13654,9 +13654,11 @@ async function run() {
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
   const jsonlist = jsonresp.filter(user => { return user.isActive === false });
 
+  console.log(`******* RemoveFlag - ${removeFlag}`)
+
   const removeduserlist = [{login:'1649901'},{login:'manitest'}];
   let rmvconfrm = 0;
-  if(removeFlag.toLowerCase() === 'no'){
+  if(removeFlag.toLowerCase() === 'yes'){
     console.log(`**** Attempting to remove inactive user lists from organization - ${removeduserlist.length} ****`)
 
     for(const rmuserlist of removeduserlist){
