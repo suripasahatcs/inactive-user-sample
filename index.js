@@ -15,7 +15,7 @@ async function run() {
     , days = core.getInput('activity_days')
     , token = getRequiredInput('token')
     , outputDir = getRequiredInput('outputDir')
-    , organization = getRequiredInput('organization')
+    , organizationinp = getRequiredInput('organization')
     , maxRetries = getRequiredInput('octokit_max_retries')
     , removeFlag =  getRequiredInput('remove_flag')
   ;
@@ -34,7 +34,53 @@ async function run() {
   const octokit = githubClient.create(token, maxRetries)
     , orgActivity = new OrganizationActivity(octokit)
   ;
+  //***start */
+  let organizationlist = organizationinp.split(',');
+  const removeMulUserList = [];
+  for(const organization of organizationlist){
+    console.log(`Attempting to generate ${organization} - user activity data, this could take some time...`);
+    const userActivity = await orgActivity.getUserActivity(organization, fromDate);
+    const jsonresp = userActivity.map(activity => activity.jsonPayload);
+    const jsonlist = jsonresp.filter(user => { return user.isActive === false });
 
+    console.log(`******* RemoveFlag - ${removeFlag}`)
+
+    // const removeduserlist = [{login:'1649898'},{login:'manitest'}];{login:'amolmandloi037'},
+    const removeduserlist = [{login:'Meiyanthan'},{login:'manitest'}];
+    const removeMulUserRes = removeMultipleUser(orgActivity, organization, removeduserlist);
+    Object.assign(removeMulUserList, removeMulUserRes);
+    console.log(removeMulUserRes);
+  }
+
+  console.log(removeMulUserRes);
+  
+  async function removeMultipleUser(orgActivity, orgsname, removeduserarr){
+    let rmvconfrm = 0;
+    if(removeFlag.toLowerCase() === 'yes'){
+      console.log(`**** Attempting to remove inactive user lists from - ${orgsname}. Count of ${removeduserarr.length} ****`)
+
+      for(const rmuserlist of removeduserarr){
+        let rmusername = rmuserlist.login;
+        let removeuserActivity = await orgActivity.getremoveUserData(orgsname, rmusername);
+        if(removeuserActivity.status === 'success'){
+          console.log(`${rmusername} - Inactive users removed from - ${orgsname}`);
+          Object.assign(rmuserlist, {status:'removed'});
+          rmvconfrm++;
+        }else{
+          console.log(`${rmusername} - Due to some error not removed from - ${orgsname}`);
+          Object.assign(rmuserlist, {status:'not removed'});
+        }
+      }
+    }else{
+      console.log(`**** Skipping the remove inactive user lists from - ${organization} process. **** `)
+      rmvconfrm = removeduserarr.length;
+    }
+
+    return removeduserarr;
+  }
+  //***end test */
+
+  /*
   console.log(`Attempting to generate organization user activity data, this could take some time...`);
   const userActivity = await orgActivity.getUserActivity(organization, fromDate);
   const jsonresp = userActivity.map(activity => activity.jsonPayload);
@@ -64,18 +110,19 @@ async function run() {
     console.log(`**** Skipping the remove inactive user lists from organization process. **** `)
     rmvconfrm = removeduserlist.length;
   }
-  
-  console.log(`User activity data captured, generating inactive user report... `);
-  saveIntermediateData(outputDir, removeduserlist);
+  */
 
-  console.log(removeduserlist)
-  console.log(jsonlist)
+  console.log(`User activity data captured, generating inactive user report... `);
+  // saveIntermediateData(outputDir, removeduserlist);
+
+  // console.log(removeduserlist)
+  // console.log(jsonlist)
 
  
   const totalInactive = jsonlist.length;
   
 
-  core.setOutput('rmuserjson', removeduserlist);
+  core.setOutput('rmuserjson', removeMulUserRes);
   core.setOutput('usercount', totalInactive);
   if(rmvconfrm === totalInactive){
     core.setOutput('message', 'Success');
