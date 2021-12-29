@@ -44,8 +44,10 @@ module.exports = class OrganizationUserActivity {
       if (userActivity[user.login]) {
         if (user.email && user.email.length > 0) {
           userActivity[user.login] = user.email;
+          userActivity[user.login] = user.orgs;
         }
       } else {
+        console.log(`*****else came***`)
         const userData = new UserActivity(user.login);
         userData.email = user.email;
         userData.orgs = user.orgs;
@@ -53,6 +55,9 @@ module.exports = class OrganizationUserActivity {
         userActivity[user.login] = userData
       }
     });
+    console.log(`*****start***`)
+    console.log(userActivity)
+    console.log(`*****end***`)
 
     // An array of user activity objects
     return Object.values(userActivity);
