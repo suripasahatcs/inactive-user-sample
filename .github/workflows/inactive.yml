@@ -14,6 +14,9 @@ on:
       activity_days:
         description: The number of days to use to analyze activity
         default: '30'
+      remove_flag:
+        description: Inactive user removal confirmation 'Yes' or 'No'
+        default: 'No'
         
 jobs:
   orgs:
