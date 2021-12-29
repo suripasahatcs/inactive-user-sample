@@ -42,7 +42,7 @@ async function run() {
     const userActivity = await orgActivity.getUserActivity(organization, fromDate);
     const jsonresp = userActivity.map(activity => activity.jsonPayload);
     const jsonlist = jsonresp.filter(user => { return user.isActive === false });
-
+    console.log(jsonlist)
     console.log(`******* RemoveFlag - ${removeFlag}`)
 
     // const removeduserlist = [{login:'1649898'},{login:'manitest'}];{login:'amolmandloi037'},
@@ -52,7 +52,7 @@ async function run() {
     console.log(removeMulUserRes);
   }
 
-  console.log(removeMulUserRes);
+  console.log(removeMulUserList);
   
   async function removeMultipleUser(orgActivity, orgsname, removeduserarr){
     let rmvconfrm = 0;

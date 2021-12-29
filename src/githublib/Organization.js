@@ -28,7 +28,8 @@ module.exports = class Organization {
         return members.map(member => {
           return {
             login: member.login,
-            email: member.email || ''
+            email: member.email || '',
+            orgs: org
           };
         });
       });
