@@ -17,6 +17,7 @@ async function run() {
     , outputDir = getRequiredInput('outputDir')
     , organization = getRequiredInput('organization')
     , maxRetries = getRequiredInput('octokit_max_retries')
+    , removeFlag =  getRequiredInput('remove_flag')
   ;
 
   let fromDate;
@@ -40,23 +41,28 @@ async function run() {
   const jsonlist = jsonresp.filter(user => { return user.isActive === false });
 
   const removeduserlist = [{login:'1649901'},{login:'manitest'}];
-  console.log(`Attempting to remove inactive user lists from organization - ${removeduserlist.length} `)
-
   let rmvconfrm = 0;
-  for(const rmuserlist of removeduserlist){
-    let rmusername = rmuserlist.login;
-    let removeuserActivity = await orgActivity.getremoveUserData(organization, rmusername);
-    if(removeuserActivity.status === 'success'){
-      console.log(`${rmusername} - Inactive users removed from organization`);
-      Object.assign(rmuserlist, {status:'removed'});
-      rmvconfrm++;
-    }else{
-      console.log(`${rmusername} - Due to some error not removed from organization`);
-      Object.assign(rmuserlist, {status:'not removed'});
+  if(removeFlag.toLowerCase() === 'no'){
+    console.log(`**** Attempting to remove inactive user lists from organization - ${removeduserlist.length} ****`)
+
+    for(const rmuserlist of removeduserlist){
+      let rmusername = rmuserlist.login;
+      let removeuserActivity = await orgActivity.getremoveUserData(organization, rmusername);
+      if(removeuserActivity.status === 'success'){
+        console.log(`${rmusername} - Inactive users removed from organization`);
+        Object.assign(rmuserlist, {status:'removed'});
+        rmvconfrm++;
+      }else{
+        console.log(`${rmusername} - Due to some error not removed from organization`);
+        Object.assign(rmuserlist, {status:'not removed'});
+      }
     }
+  }else{
+    console.log(`**** Skipping the remove inactive user lists from organization process. **** `)
+    rmvconfrm = removeduserlist.length;
   }
   
-  console.log(`User activity data captured, generating removed inactive user report... `);
+  console.log(`User activity data captured, generating inactive user report... `);
   saveIntermediateData(outputDir, removeduserlist);
 
   console.log(removeduserlist)
