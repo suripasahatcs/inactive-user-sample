@@ -13659,6 +13659,7 @@ async function run() {
   let organizationlist = organizationinp.split(',');
   let removeMulUserList = [];
   let jsonfinallist = [];
+  let rmvconfrm = 0;
   for(const organization of organizationlist){
     console.log(`Attempting to generate ${organization} - user activity data, this could take some time...`);
     const userActivity = await orgActivity.getUserActivity(organization, fromDate);
@@ -13670,9 +13671,9 @@ async function run() {
     // const removeduserlist = [{login:'1649898'},{login:'manitest'}];{login:'amolmandloi037'},
     const removeduserlist = [{login:'Meiyanthan'},{login:'manitest'}];
     const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist);
-    removeMulUserList = [...removeMulUserList, ...removeMulUserRes];
+    removeMulUserList = [...removeMulUserList, ...removeMulUserRes.removeduserarr];
     jsonfinallist = [...jsonfinallist, ...jsonlist];
-
+    rmvconfrm += removeMulUserRes.rmvlen;
     console.log(removeMulUserRes);
   }
   console.log('******output*******')
@@ -13681,7 +13682,7 @@ async function run() {
   console.log(jsonfinallist);
   
   async function removeMultipleUser(orgActivity, orgsname, removeduserarr){
-    let rmvconfrm = 0;
+    let rmvlen = 0;
     if(removeFlag.toLowerCase() === 'yes'){
       console.log(`**** Attempting to remove inactive user lists from - ${orgsname}. Count of ${removeduserarr.length} ****`)
 
@@ -13691,18 +13692,18 @@ async function run() {
         if(removeuserActivity.status === 'success'){
           console.log(`${rmusername} - Inactive users removed from - ${orgsname}`);
           Object.assign(rmuserlist, {status:'removed'});
-          rmvconfrm++;
+          rmvlen++;
         }else{
           console.log(`${rmusername} - Due to some error not removed from - ${orgsname}`);
-          Object.assign(rmuserlist, {status:'not removed'});
+          Object.assign(rmuserlist, {status:removeuserActivity.message});
         }
       }
     }else{
       console.log(`**** Skipping the remove inactive user lists from - ${orgsname} process. **** `)
-      rmvconfrm = removeduserarr.length;
+      rmvlen = removeduserarr.length;
     }
 
-    return removeduserarr;
+    return {removeduserarr: removeduserarr, rmvlen: rmvlen};
   }
   //***end test */
 
@@ -13746,7 +13747,7 @@ async function run() {
 
  
   const totalInactive = jsonfinallist.length;
-  
+  console.log(`rmvconfrm - ${rmvconfrm} & totalInactive - ${totalInactive}`)
 
   core.setOutput('rmuserjson', removeMulUserList);
   core.setOutput('usercount', totalInactive);
