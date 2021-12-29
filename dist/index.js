@@ -12784,11 +12784,10 @@ module.exports = class OrganizationUserActivity {
       if (userActivity[user.login]) {
         if (user.email && user.email.length > 0) {
           userActivity[user.login] = user.email;
-          userActivity[user.login] = user.orgs;
         }
       } else {
         console.log(`*****else came***`)
-        const userData = new UserActivity(user.login);
+        const userData = new UserActivity(user.login, user.orgs);
         userData.email = user.email;
         userData.orgs = user.orgs;
 
