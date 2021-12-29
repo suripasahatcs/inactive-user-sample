@@ -1,5 +1,3 @@
-// const github = require('@actions/github')
-//   , core = require('@actions/core')
 const fs = require('fs')
   , path = require('path')
   , core = require('@actions/core')
@@ -49,8 +47,7 @@ async function run() {
     console.log(`******* RemoveFlag - ${removeFlag}`)
 
     // const removeduserlist = [{login:'1649898'},{login:'manitest'}];{login:'amolmandloi037'},
-    // const removeduserlist = [{login:'Meiyanthan'},{login:'manitest'}];
-    const removeduserlist = jsonlist;
+    const removeduserlist = [{login:'Meiyanthan'},{login:'manitest'}];
     const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist, removeFlag);
     removeMulUserList = [...removeMulUserList, ...removeMulUserRes.removeduserarr];
     jsonfinallist = [...jsonfinallist, ...jsonlist];
@@ -66,7 +63,7 @@ async function run() {
   //***end test */
 
   console.log(`User activity data captured, generating inactive user report... `);
-  // saveIntermediateData(outputDir, removeMulUserList);
+  saveIntermediateData(outputDir, removeMulUserList);
 
   // console.log(removeduserlist)
   // console.log(jsonlist)

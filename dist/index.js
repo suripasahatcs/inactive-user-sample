@@ -13619,8 +13619,6 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-// const github = require('@actions/github')
-//   , core = require('@actions/core')
 const fs = __nccwpck_require__(7147)
   , path = __nccwpck_require__(1017)
   , core = __nccwpck_require__(4085)
@@ -13670,8 +13668,7 @@ async function run() {
     console.log(`******* RemoveFlag - ${removeFlag}`)
 
     // const removeduserlist = [{login:'1649898'},{login:'manitest'}];{login:'amolmandloi037'},
-    // const removeduserlist = [{login:'Meiyanthan'},{login:'manitest'}];
-    const removeduserlist = jsonlist;
+    const removeduserlist = [{login:'Meiyanthan'},{login:'manitest'}];
     const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist, removeFlag);
     removeMulUserList = [...removeMulUserList, ...removeMulUserRes.removeduserarr];
     jsonfinallist = [...jsonfinallist, ...jsonlist];
@@ -13687,7 +13684,7 @@ async function run() {
   //***end test */
 
   console.log(`User activity data captured, generating inactive user report... `);
-  // saveIntermediateData(outputDir, removeMulUserList);
+  saveIntermediateData(outputDir, removeMulUserList);
 
   // console.log(removeduserlist)
   // console.log(jsonlist)
