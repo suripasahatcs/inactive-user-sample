@@ -42,7 +42,8 @@ async function run() {
 
   console.log(`******* RemoveFlag - ${removeFlag}`)
 
-  const removeduserlist = [{login:'1649901'},{login:'manitest'}];
+  // const removeduserlist = [{login:'1649901'},{login:'manitest'}];
+  const removeduserlist = [{login:'amolmandloi037'},{login:'suripasahatcs'},{login:'manitest'}];
   let rmvconfrm = 0;
   if(removeFlag.toLowerCase() === 'yes'){
     console.log(`**** Attempting to remove inactive user lists from organization - ${removeduserlist.length} ****`)
