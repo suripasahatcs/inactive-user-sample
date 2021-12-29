@@ -2,10 +2,10 @@ const UserActivityAttributes = require('./UserActivityAttributes');
 
 module.exports = class UserActivity {
 
-    constructor(login,orgs) {
+    constructor(login, orgs) {
         this._login = login;
         this._orgs = orgs;
-
+        console.log(`*****1111***${orgs}`)
         const data = {};
         Object.values(UserActivityAttributes).forEach(type => {
             data[type] = {};
