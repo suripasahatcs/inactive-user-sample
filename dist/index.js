@@ -12786,16 +12786,13 @@ module.exports = class OrganizationUserActivity {
           userActivity[user.login] = user.email;
         }
       } else {
-        console.log(`*****else came***`)
         const userData = new UserActivity(user.login, user.orgs);
         userData.email = user.email;
 
         userActivity[user.login] = userData
       }
     });
-    console.log(`*****start***`)
-    console.log(userActivity)
-    console.log(`*****end***`)
+    
 
     // An array of user activity objects
     return Object.values(userActivity);
@@ -12803,7 +12800,6 @@ module.exports = class OrganizationUserActivity {
 
   async getremoveUserData (org, user) {
     const self = this;
-
     const removeUser = await self.removeUserClient.getRemoveUserFrom(org, user);
     
     return removeUser;
@@ -12853,7 +12849,7 @@ module.exports = class UserActivity {
     constructor(login, orgs) {
         this._login = login;
         this._orgs = orgs;
-        console.log(`*****1111***${orgs}`)
+
         const data = {};
         Object.values(UserActivityAttributes).forEach(type => {
             data[type] = {};
@@ -12866,7 +12862,7 @@ module.exports = class UserActivity {
     }
 
     get orgs() {
-        return this._orgs;
+        return this._orgs || '';
     }
 
     get email() {
@@ -13662,6 +13658,7 @@ async function run() {
   //***start */
   let organizationlist = organizationinp.split(',');
   const removeMulUserList = [];
+  const jsonfinallist = [];
   for(const organization of organizationlist){
     console.log(`Attempting to generate ${organization} - user activity data, this could take some time...`);
     const userActivity = await orgActivity.getUserActivity(organization, fromDate);
@@ -13673,11 +13670,15 @@ async function run() {
     // const removeduserlist = [{login:'1649898'},{login:'manitest'}];{login:'amolmandloi037'},
     const removeduserlist = [{login:'Meiyanthan'},{login:'manitest'}];
     const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist);
-    Object.assign(removeMulUserList, removeMulUserRes);
+    removeMulUserList = [...removeMulUserList, ...removeMulUserRes];
+    jsonfinallist = [...jsonfinallist, ...jsonlist];
+
     console.log(removeMulUserRes);
   }
-
+  console.log('******output*******')
   console.log(removeMulUserList);
+  console.log('******final*******')
+  console.log(jsonfinallist);
   
   async function removeMultipleUser(orgActivity, orgsname, removeduserarr){
     let rmvconfrm = 0;
@@ -13744,10 +13745,10 @@ async function run() {
   // console.log(jsonlist)
 
  
-  const totalInactive = jsonlist.length;
+  const totalInactive = jsonfinallist.length;
   
 
-  core.setOutput('rmuserjson', removeMulUserRes);
+  core.setOutput('rmuserjson', removeMulUserList);
   core.setOutput('usercount', totalInactive);
   if(rmvconfrm === totalInactive){
     core.setOutput('message', 'Success');

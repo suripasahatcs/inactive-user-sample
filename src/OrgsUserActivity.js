@@ -46,16 +46,13 @@ module.exports = class OrganizationUserActivity {
           userActivity[user.login] = user.email;
         }
       } else {
-        console.log(`*****else came***`)
         const userData = new UserActivity(user.login, user.orgs);
         userData.email = user.email;
 
         userActivity[user.login] = userData
       }
     });
-    console.log(`*****start***`)
-    console.log(userActivity)
-    console.log(`*****end***`)
+    
 
     // An array of user activity objects
     return Object.values(userActivity);
@@ -63,7 +60,6 @@ module.exports = class OrganizationUserActivity {
 
   async getremoveUserData (org, user) {
     const self = this;
-
     const removeUser = await self.removeUserClient.getRemoveUserFrom(org, user);
     
     return removeUser;

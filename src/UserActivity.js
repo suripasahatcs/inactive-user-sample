@@ -5,7 +5,7 @@ module.exports = class UserActivity {
     constructor(login, orgs) {
         this._login = login;
         this._orgs = orgs;
-        console.log(`*****1111***${orgs}`)
+
         const data = {};
         Object.values(UserActivityAttributes).forEach(type => {
             data[type] = {};
@@ -18,7 +18,7 @@ module.exports = class UserActivity {
     }
 
     get orgs() {
-        return this._orgs;
+        return this._orgs || '';
     }
 
     get email() {
