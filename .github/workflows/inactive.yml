@@ -14,11 +14,10 @@ on:
       activity_days:
         description: The number of days to use to analyze activity
         default: '30'
+        
       remove_flag:
         description: Inactive user removal confirmation 'Yes' or 'No'
         default: 'No'
-      since:
-        description: YYYY-MM-DDTHH:mm:ss.
         
 jobs:
   orgs:
@@ -38,9 +37,8 @@ jobs:
         with:
           token: ${{ secrets.OCTODEMO_TEMP_TOKEN }}
           organization: ${{ github.event.inputs.organization }}
-          # activity_days: ${{ github.event.inputs.activity_days }}
+          activity_days: ${{ github.event.inputs.activity_days }}
           remove_flag: ${{ github.event.inputs.remove_flag }}
-          since: ${{ github.event.inputs.since }}
 
       - name: Results
         run: |
