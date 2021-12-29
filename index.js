@@ -36,8 +36,8 @@ async function run() {
   ;
   //***start */
   let organizationlist = organizationinp.split(',');
-  const removeMulUserList = [];
-  const jsonfinallist = [];
+  let removeMulUserList = [];
+  let jsonfinallist = [];
   for(const organization of organizationlist){
     console.log(`Attempting to generate ${organization} - user activity data, this could take some time...`);
     const userActivity = await orgActivity.getUserActivity(organization, fromDate);
