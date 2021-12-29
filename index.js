@@ -47,7 +47,7 @@ async function run() {
 
     // const removeduserlist = [{login:'1649898'},{login:'manitest'}];{login:'amolmandloi037'},
     const removeduserlist = [{login:'Meiyanthan'},{login:'manitest'}];
-    const removeMulUserRes = removeMultipleUser(orgActivity, organization, removeduserlist);
+    const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist);
     Object.assign(removeMulUserList, removeMulUserRes);
     console.log(removeMulUserRes);
   }
