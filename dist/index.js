@@ -12788,6 +12788,7 @@ module.exports = class OrganizationUserActivity {
       } else {
         const userData = new UserActivity(user.login);
         userData.email = user.email;
+        userData.orgs = user.orgs;
 
         userActivity[user.login] = userData
       }
@@ -13687,7 +13688,7 @@ async function run() {
         }
       }
     }else{
-      console.log(`**** Skipping the remove inactive user lists from - ${organization} process. **** `)
+      console.log(`**** Skipping the remove inactive user lists from - ${orgsname} process. **** `)
       rmvconfrm = removeduserarr.length;
     }
 
