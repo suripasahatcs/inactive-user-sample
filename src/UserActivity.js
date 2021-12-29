@@ -2,8 +2,9 @@ const UserActivityAttributes = require('./UserActivityAttributes');
 
 module.exports = class UserActivity {
 
-    constructor(login) {
+    constructor(login,orgs) {
         this._login = login;
+        this._orgs = orgs;
 
         const data = {};
         Object.values(UserActivityAttributes).forEach(type => {
@@ -14,6 +15,10 @@ module.exports = class UserActivity {
 
     get login() {
         return this._login;
+    }
+
+    get orgs() {
+        return this._orgs;
     }
 
     get email() {
@@ -60,7 +65,8 @@ module.exports = class UserActivity {
             result = {
                 login: this.login,
                 email: this.email,
-                isActive: this.isActive
+                isActive: this.isActive,
+                orgs: this.orgs
             };
 
         Object.values(UserActivityAttributes).forEach(type => {
