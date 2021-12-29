@@ -13641,7 +13641,7 @@ async function run() {
   } else {
     fromDate = dateUtil.convertDaysToDate(days);
   }
-
+  console.log(`************ remove flag - ${removeFlag}`)
   // Ensure that the output directory exists before we our limited API usage
   await io.mkdirP(outputDir)
 

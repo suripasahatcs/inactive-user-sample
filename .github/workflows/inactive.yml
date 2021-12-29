@@ -37,6 +37,7 @@ jobs:
           token: ${{ secrets.OCTODEMO_TEMP_TOKEN }}
           organization: ${{ github.event.inputs.organization }}
           activity_days: ${{ github.event.inputs.activity_days }}
+          remove_flag: ${{ github.event.inputs.remove_flag }}
 
       - name: Results
         run: |
