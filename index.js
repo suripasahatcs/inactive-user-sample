@@ -46,8 +46,10 @@ async function run() {
     console.log(jsonlist)
     console.log(`******* RemoveFlag - ${removeFlag}`)
 
-    // const removeduserlist = [{login:'1649898'},{login:'manitest'}];{login:'amolmandloi037'},
-    const removeduserlist = [{login:'Meiyanthan'},{login:'manitest'}];
+    // const removeduserlist = [{login:'1649898',email: '', isActive: false, orgs: 'scb-et', commits: 0, issues: 0, issueComments: 0, prComments: 0},
+    // {login:'manitest',email: '', isActive: false, orgs: 'scb-et', commits: 0, issues: 0, issueComments: 0, prComments: 0}]; //{login:'amolmandloi037'},
+    const removeduserlist = [{login:'Meiyanthan',email: '', isActive: false, orgs: 'internal-test-organization', commits: 0, issues: 0, issueComments: 0, prComments: 0},
+                              {login:'manitest',email: '', isActive: false, orgs: 'internal-test-organization', commits: 0, issues: 0, issueComments: 0, prComments: 0}];
     const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist, removeFlag);
     removeMulUserList = [...removeMulUserList, ...removeMulUserRes.removeduserarr];
     jsonfinallist = [...jsonfinallist, ...jsonlist];
