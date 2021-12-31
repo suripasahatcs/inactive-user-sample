@@ -13656,7 +13656,7 @@ async function run() {
   if((!Number.isInteger(days)) || (days < 0)) {
     console.log(Number.isInteger(days))
     console.log(days)
-    throw new Error(`Pass a valid input 'activity_days - It accept only Positive Number'.`)
+    throw new Error('Pass a valid input activity_days - It accept only Positive Number');
   }
 
   let fromDate;
