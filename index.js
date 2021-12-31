@@ -1,11 +1,12 @@
 const fs = require('fs')
   , path = require('path')
   , core = require('@actions/core')
-  , io = require('@actions/io')
+  // , io = require('@actions/io')
   , json2csv = require('json2csv')
   , OrganizationActivity = require('./src/OrgsUserActivity')
   , githubClient = require('./src/githublib/githubClient')
   , dateUtil = require('./src/dateUtil')
+  , OrgsssActivity = require('./src/githublib/Organization')
 ;
 
 async function run() {
@@ -17,25 +18,41 @@ async function run() {
     , maxRetries = getRequiredInput('octokit_max_retries')
     , removeFlag =  getRequiredInput('remove_flag')
   ;
-/* [\w\.\_\-] */
+
+// testing 
+  // const since = '2021-12-01T00:12:23'
+  // , days = 30
+  //   , token = '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'
+  //   , outputDir = '/'
+  //   , organizationinp = 'mei-et2,internal-test-organization,mei-et1,mei-et_,mei_et,mei_e.t'
+  //   , maxRetries = 15
+  //   , removeFlag =  'No'
+  // ;
+
   
   if((removeFlag.toLowerCase() != 'yes') && (removeFlag.toLowerCase() !== 'no')) {
-    throw new Error(`Pass a valid input 'remove_flag - Yes/No'.`)
+    throw new Error(`Provide a valid 'remove_flag - Yes/No'.`)
   }
 
   if((!Number(days)) || (days < 0)) {
-    throw new Error('Pass a valid input activity_days - It accept only Positive Number');
+    throw new Error('Provide a valid activity_days - It accept only Positive Number');
   }
 
   let regex = /^[\w\.\_\-]+((,|-)[\w\.\_\-]+)*[\w\.\_\-]+$/g;
-  // console.log(regex.test(organizationinp))
   let validate_org = regex.test(organizationinp);
   if((!validate_org)) {
-    throw new Error('Pass a valid input organization - It accept only comma separated value');
+    throw new Error('Provide a valid organization - It accept only comma separated value');
   }
+
+  let sinceregex = /^(20)\d\d-(0[1-9]|1[012])-([012]\d|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/ 
+;
 
   let fromDate;
   if (since) {
+    let validate_since = sinceregex.test(since);
+    if((!validate_since)) {
+      throw new Error('Provide a valid since - It accept only following format - YYYY-MM-DDTHH:mm:ss');
+    }
     console.log(`Since Date has been specified, using that instead of active_days`)
     fromDate = dateUtil.getFromDate(since);
   } else {
@@ -56,18 +73,18 @@ async function run() {
   let rmvconfrm = 0;
   for(const organization of organizationlist){
     console.log(`Attempting to generate ${organization} - user activity data, this could take some time...`);
-    const userActivity = await orgActivity.getUserActivity(organization, fromDate);
-    console.log(userActivity)
-    if(userActivity.status !== 'error') {
+    const orgsComments = await orgActivity.getOrgsValid(organization);
+    if(orgsComments.status !== 'error') {
+      const userActivity = await orgActivity.getUserActivity(organization, fromDate);
       const jsonresp = userActivity.map(activity => activity.jsonPayload);
       const jsonlist = jsonresp.filter(user => { return user.isActive === false });
-      console.log(jsonlist)
+      // console.log(jsonlist)
       console.log(`******* RemoveFlag - ${removeFlag}`)
-
-      const removeduserlist = [{login:'1649898',email: '', isActive: false, orgs: 'scb-et', commits: 0, issues: 0, issueComments: 0, prComments: 0},
-      {login:'manitest',email: '', isActive: false, orgs: 'scb-et', commits: 0, issues: 0, issueComments: 0, prComments: 0}]; 
-      // const removeduserlist = [{login:'amolmandloi037',email: '', isActive: false, orgs: 'internal-test-organization', commits: 0, issues: 0, issueComments: 0, prComments: 0},
-      //                           {login:'manitest',email: '', isActive: false, orgs: 'internal-test-organization', commits: 0, issues: 0, issueComments: 0, prComments: 0}];
+      // const removeduserlist = jsonlist;
+      // const removeduserlist = [{login:'1649898',email: '', isActive: false, orgs: 'scb-et', commits: 0, issues: 0, issueComments: 0, prComments: 0},
+      // {login:'manitest',email: '', isActive: false, orgs: 'scb-et', commits: 0, issues: 0, issueComments: 0, prComments: 0}]; 
+      const removeduserlist = [{login:'Meiyanthan',email: '', isActive: false, orgs: 'internal-test-organization', commits: 0, issues: 0, issueComments: 0, prComments: 0},
+                                {login:'manitest',email: '', isActive: false, orgs: 'internal-test-organization', commits: 0, issues: 0, issueComments: 0, prComments: 0}];
       const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist, removeFlag);
       removeMulUserList = [...removeMulUserList, ...removeMulUserRes.removeduserarr];
       jsonfinallist = [...jsonfinallist, ...jsonlist];
@@ -75,19 +92,16 @@ async function run() {
     }
   }
 
-  console.log('******output*******')
-  console.log(removeMulUserList);
+  // console.log('******output*******')
+  // console.log(removeMulUserList);
   console.log('******final*******')
-  console.log(jsonfinallist);
+  // console.log(jsonfinallist);
   
   
   //***end test */
 
   console.log(`User activity data captured, generating inactive user report... `);
   saveIntermediateData(outputDir, removeMulUserList);
-
-  // console.log(removeduserlist)
-  // console.log(jsonlist)
 
  
   const totalInactive = jsonfinallist.length;
@@ -139,11 +153,11 @@ async function removeMultipleUser(orgActivity, orgsname, removeduserarr, removeF
       let removeuserActivity = await orgActivity.getremoveUserData(orgsname, rmusername);
       if(removeuserActivity.status === 'success'){
         console.log(`${rmusername} - Inactive users removed from - ${orgsname}`);
-        Object.assign(rmuserlist, {status:'removed'});
+        Object.assign(rmuserlist, {status:1, description:'user is removed from organization'});
         rmvlen++;
       }else{
         console.log(`${rmusername} - Due to some error not removed from - ${orgsname}`);
-        Object.assign(rmuserlist, {status:'not removed'});
+        Object.assign(rmuserlist, {status:0, description:'user is retained from organization'});
       }
     }
   }else{

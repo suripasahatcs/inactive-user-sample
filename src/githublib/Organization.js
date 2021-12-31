@@ -10,7 +10,6 @@ module.exports = class Organization {
   getRepositories(org) {
     return this.octokit.paginate("GET /orgs/:org/repos", {org: org, per_page: 100})
       .then(repos => {
-        console.log(repos);
         console.log(`Processing ${repos.length} repositories`);
         return repos.map(repo => { return {
           name: repo.name,
@@ -20,9 +19,34 @@ module.exports = class Organization {
           has_projects: repo.has_projects,
           url: repo.html_url,
         }});
-      }).catch(error => {
-        return {status:'error',message: 'not found'};
-      });
+      })
+  }
+
+  getOrgs(org) {
+    return this.octokit.paginate("GET /orgs/:org",
+      {
+        org: org
+      }
+    ).then(orgs => {
+        console.log(`Searching ${org} organization`);
+        const data =  {
+          name: org,
+          status: 'success'
+        }
+        return data;
+      })
+      .catch(err => {
+        console.log(`Invalid name of Organization ===>> ${org} `)
+        if (err.status === 404) {
+            return {
+              name: org,
+              status: 'error'
+            }
+        } else {
+          console.error(err)
+          throw err;
+        }
+      })
   }
 
   findUsers(org) {

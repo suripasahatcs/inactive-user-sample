@@ -31,12 +31,6 @@ module.exports = class OrganizationUserActivity {
     const repositories = await self.organizationClient.getRepositories(org)
       , orgUsers = await self.organizationClient.findUsers(org)
     ;
-    console.log('2nd came')
-console.log(repositories)
-console.log('2nd came')
-    if(repositories.status === 'error') {
-      return {status:repositories.status,repositories: error.message};
-    }
 
     const activityResults = {};
     for(let idx = 0; idx< repositories.length; idx++) {
@@ -70,6 +64,14 @@ console.log('2nd came')
     
     return removeUser;
 
+  }
+
+  async getOrgsValid (org) {
+    const self = this;
+    const orgsValid = await self.organizationClient.getOrgs(org);
+
+    return orgsValid;
+    
   }
 }
 
