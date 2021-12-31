@@ -20,10 +20,8 @@ module.exports = class Organization {
           has_projects: repo.has_projects,
           url: repo.html_url,
         }});
-      })
-      .catch(error => {
-        console.log(`Invalid organization name ==> ${org} ${error.message}`);
-        return {status:'error',message: error.message};
+      }).catch(error => {
+        return {status:'error',message: 'not found'};
       });
   }
 

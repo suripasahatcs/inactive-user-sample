@@ -13195,10 +13195,8 @@ module.exports = class Organization {
           has_projects: repo.has_projects,
           url: repo.html_url,
         }});
-      })
-      .catch(error => {
-        console.log(`Invalid organization name ==> ${org} ${error.message}`);
-        return {status:'error',message: error.message};
+      }).catch(error => {
+        return {status:'error',message: 'not found'};
       });
   }
 
@@ -13654,7 +13652,7 @@ async function run() {
   if((removeFlag.toLowerCase() != 'yes') && (removeFlag.toLowerCase() !== 'no')) {
     throw new Error(`Pass a valid input 'remove_flag - Yes/No'.`)
   }
-  console.log(Number(days))
+
   if((!Number(days)) || (days < 0)) {
     throw new Error('Pass a valid input activity_days - It accept only Positive Number');
   }
