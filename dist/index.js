@@ -13647,11 +13647,12 @@ async function run() {
     , removeFlag =  getRequiredInput('remove_flag')
   ;
 /* [\w\.\_\-] */
-  if(removeFlag.toLowerCase() !== 'yes' && removeFlag.toLowerCase() !== 'no') {
+  console.log(removeFlag.toLowerCase())
+  if((removeFlag.toLowerCase() !== 'yes') || (removeFlag.toLowerCase() !== 'no')) {
     throw new Error(`Pass a valid input 'remove_flag - Yes/No'.`)
   }
-
-  if(!Number.isInteger(activity_days) && Number.isInteger(activity_days) < 0) {
+  console.log(!Number.isInteger(activity_days))
+  if((!Number.isInteger(activity_days)) && (Number.isInteger(activity_days) < 0)) {
     throw new Error(`Pass a valid input 'activity_days - It accept only Positive Number'.`)
   }
 
