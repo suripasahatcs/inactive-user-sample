@@ -13649,12 +13649,11 @@ async function run() {
 /* [\w\.\_\-] */
   
   if((removeFlag.toLowerCase() != 'yes') && (removeFlag.toLowerCase() !== 'no')) {
-    console.log(removeFlag.toLowerCase())
     throw new Error(`Pass a valid input 'remove_flag - Yes/No'.`)
   }
-  console.log(Number(activity_days))
+  console.log(Number(days))
   if((!Number(days)) || (days < 0)) {
-    console.log(Number(activity_days))
+    console.log(Number(days))
     console.log(days)
     throw new Error('Pass a valid input activity_days - It accept only Positive Number');
   }
