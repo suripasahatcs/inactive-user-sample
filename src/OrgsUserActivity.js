@@ -31,7 +31,9 @@ module.exports = class OrganizationUserActivity {
     const repositories = await self.organizationClient.getRepositories(org)
       , orgUsers = await self.organizationClient.findUsers(org)
     ;
-
+    console.log('2nd came')
+console.log(repositories)
+console.log('2nd came')
     if(repositories.status === 'error') {
       return {status:repositories.status,repositories: error.message};
     }

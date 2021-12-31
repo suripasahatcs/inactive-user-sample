@@ -12771,7 +12771,9 @@ module.exports = class OrganizationUserActivity {
     const repositories = await self.organizationClient.getRepositories(org)
       , orgUsers = await self.organizationClient.findUsers(org)
     ;
-
+    console.log('2nd came')
+console.log(repositories)
+console.log('2nd came')
     if(repositories.status === 'error') {
       return {status:repositories.status,repositories: error.message};
     }
@@ -13183,6 +13185,7 @@ module.exports = class Organization {
   getRepositories(org) {
     return this.octokit.paginate("GET /orgs/:org/repos", {org: org, per_page: 100})
       .then(repos => {
+        console.log(repos);
         console.log(`Processing ${repos.length} repositories`);
         return repos.map(repo => { return {
           name: repo.name,
