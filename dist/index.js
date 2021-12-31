@@ -13653,8 +13653,6 @@ async function run() {
   }
   console.log(Number(days))
   if((!Number(days)) || (days < 0)) {
-    console.log(Number(days))
-    console.log(days)
     throw new Error('Pass a valid input activity_days - It accept only Positive Number');
   }
 
@@ -13681,6 +13679,7 @@ async function run() {
   for(const organization of organizationlist){
     console.log(`Attempting to generate ${organization} - user activity data, this could take some time...`);
     const userActivity = await orgActivity.getUserActivity(organization, fromDate);
+    console.log(userActivity)
     if(userActivity.status !== 'error') {
       const jsonresp = userActivity.map(activity => activity.jsonPayload);
       const jsonlist = jsonresp.filter(user => { return user.isActive === false });
