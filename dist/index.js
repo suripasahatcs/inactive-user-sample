@@ -13653,9 +13653,9 @@ async function run() {
     throw new Error(`Pass a valid input 'remove_flag - Yes/No'.`)
   }
   
-  if((!Number.isInteger(activity_days)) || (activity_days < 0)) {
-    console.log(Number.isInteger(activity_days))
-    console.log(activity_days)
+  if((!Number.isInteger(days)) || (days < 0)) {
+    console.log(Number.isInteger(days))
+    console.log(days)
     throw new Error(`Pass a valid input 'activity_days - It accept only Positive Number'.`)
   }
 
