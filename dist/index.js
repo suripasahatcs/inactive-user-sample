@@ -13658,9 +13658,9 @@ async function run() {
   }
 
   let regex = /^[\w\.\_\-]+((,|-)[\w\.\_\-]+)*[\w\.\_\-]+$/g;
-  console.log(regex.test(organizationinp))
+  // console.log(regex.test(organizationinp))
   let validate_org = regex.test(organizationinp);
-  if(!validate_org) {
+  if((!validate_org)) {
     throw new Error('Pass a valid input organization - It accept only comma separated value');
   }
 
