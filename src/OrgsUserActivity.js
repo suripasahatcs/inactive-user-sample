@@ -32,6 +32,10 @@ module.exports = class OrganizationUserActivity {
       , orgUsers = await self.organizationClient.findUsers(org)
     ;
 
+    if(repositories.status === 'error') {
+      return {status:repositories.status,repositories: error.message};
+    }
+
     const activityResults = {};
     for(let idx = 0; idx< repositories.length; idx++) {
       const repoActivity = await self.repositoryClient.getActivity(repositories[idx], since);

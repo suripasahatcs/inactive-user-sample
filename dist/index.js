@@ -12772,6 +12772,10 @@ module.exports = class OrganizationUserActivity {
       , orgUsers = await self.organizationClient.findUsers(org)
     ;
 
+    if(repositories.status === 'error') {
+      return {status:repositories.status,repositories: error.message};
+    }
+
     const activityResults = {};
     for(let idx = 0; idx< repositories.length; idx++) {
       const repoActivity = await self.repositoryClient.getActivity(repositories[idx], since);
@@ -13188,6 +13192,10 @@ module.exports = class Organization {
           has_projects: repo.has_projects,
           url: repo.html_url,
         }});
+      })
+      .catch(error => {
+        console.log(`Invalid organization name ==> ${org} ${error.message}`);
+        return {status:'error',message: error.message};
       });
   }
 
@@ -13638,6 +13646,14 @@ async function run() {
     , maxRetries = getRequiredInput('octokit_max_retries')
     , removeFlag =  getRequiredInput('remove_flag')
   ;
+/* [\w\.\_\-] */
+  if(removeFlag.toLowerCase() !== 'yes' || removeFlag.toLowerCase() !== 'no') {
+    throw new Error(`Pass a valid input 'remove_flag - Yes/No'.`)
+  }
+
+  if(!Number.isInteger(activity_days) || Number.isInteger(activity_days) < 0) {
+    throw new Error(`Pass a valid input 'activity_days - It accept only Positive Number'.`)
+  }
 
   let fromDate;
   if (since) {
@@ -13662,19 +13678,21 @@ async function run() {
   for(const organization of organizationlist){
     console.log(`Attempting to generate ${organization} - user activity data, this could take some time...`);
     const userActivity = await orgActivity.getUserActivity(organization, fromDate);
-    const jsonresp = userActivity.map(activity => activity.jsonPayload);
-    const jsonlist = jsonresp.filter(user => { return user.isActive === false });
-    console.log(jsonlist)
-    console.log(`******* RemoveFlag - ${removeFlag}`)
+    if(userActivity.status !== 'error') {
+      const jsonresp = userActivity.map(activity => activity.jsonPayload);
+      const jsonlist = jsonresp.filter(user => { return user.isActive === false });
+      console.log(jsonlist)
+      console.log(`******* RemoveFlag - ${removeFlag}`)
 
-    const removeduserlist = [{login:'1649898',email: '', isActive: false, orgs: 'scb-et', commits: 0, issues: 0, issueComments: 0, prComments: 0},
-    {login:'manitest',email: '', isActive: false, orgs: 'scb-et', commits: 0, issues: 0, issueComments: 0, prComments: 0}]; 
-    // const removeduserlist = [{login:'amolmandloi037',email: '', isActive: false, orgs: 'internal-test-organization', commits: 0, issues: 0, issueComments: 0, prComments: 0},
-    //                           {login:'manitest',email: '', isActive: false, orgs: 'internal-test-organization', commits: 0, issues: 0, issueComments: 0, prComments: 0}];
-    const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist, removeFlag);
-    removeMulUserList = [...removeMulUserList, ...removeMulUserRes.removeduserarr];
-    jsonfinallist = [...jsonfinallist, ...jsonlist];
-    rmvconfrm += removeMulUserRes.rmvlen;
+      const removeduserlist = [{login:'1649898',email: '', isActive: false, orgs: 'scb-et', commits: 0, issues: 0, issueComments: 0, prComments: 0},
+      {login:'manitest',email: '', isActive: false, orgs: 'scb-et', commits: 0, issues: 0, issueComments: 0, prComments: 0}]; 
+      // const removeduserlist = [{login:'amolmandloi037',email: '', isActive: false, orgs: 'internal-test-organization', commits: 0, issues: 0, issueComments: 0, prComments: 0},
+      //                           {login:'manitest',email: '', isActive: false, orgs: 'internal-test-organization', commits: 0, issues: 0, issueComments: 0, prComments: 0}];
+      const removeMulUserRes = await removeMultipleUser(orgActivity, organization, removeduserlist, removeFlag);
+      removeMulUserList = [...removeMulUserList, ...removeMulUserRes.removeduserarr];
+      jsonfinallist = [...jsonfinallist, ...jsonlist];
+      rmvconfrm += removeMulUserRes.rmvlen;
+    }
   }
 
   console.log('******output*******')
