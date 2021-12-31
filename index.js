@@ -27,6 +27,12 @@ async function run() {
     throw new Error('Pass a valid input activity_days - It accept only Positive Number');
   }
 
+  let regex = /^[\w\.\_\-]+((,|-)[\w\.\_\-]+)*[\w\.\_\-]+$/g;
+  console.log(regex.test(organizationinp))
+  if(!regex.test(organizationinp)) {
+    throw new Error('Pass a valid input organization - It accept only comma separated value');
+  }
+
   let fromDate;
   if (since) {
     console.log(`Since Date has been specified, using that instead of active_days`)
